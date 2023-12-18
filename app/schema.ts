@@ -2,6 +2,18 @@ import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { env } from "@/app/env";
 
+export declare type ISODateString = string;
+export interface Session {
+  user?: {
+    id?: string | null;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
+  expires: ISODateString;
+  accessToken?: any;
+}
+
 neonConfig.fetchConnectionCache = true;
 const sql = neon(env.NEON_DATABASE_URL!);
 export const db = drizzle(sql);

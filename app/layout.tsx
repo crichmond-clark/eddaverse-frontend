@@ -1,4 +1,6 @@
+"use client";
 import { NextAuthProvider } from "../context/NextAuthProvider";
+import Navbar from "@/components/navbar";
 import "./globals.css";
 
 export default function RootLayout({
@@ -9,7 +11,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NextAuthProvider>{children}</NextAuthProvider>
+        <NextAuthProvider>
+          <Navbar />
+          {children}
+        </NextAuthProvider>
       </body>
     </html>
   );

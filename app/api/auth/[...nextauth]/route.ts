@@ -10,6 +10,7 @@ import { db } from "@/app/schema";
 const handler = NextAuth({
   adapter: DrizzleAdapter(db),
   secret: env.NEXTAUTH_SECRET,
+  session: { strategy: "jwt" },
   providers: [
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
@@ -31,6 +32,23 @@ const handler = NextAuth({
       from: process.env.EMAIL_FROM,
     }),
   ],
+  callbacks: {
+    jwt({ token, account, user }) {
+      if (account) {
+        token.id = user?.id;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      if (session.user) {
+        if (token) {
+          session.user.id = token.id as string;
+        }
+      }
+
+      return session;
+    },
+  },
 });
 
 export { handler as GET, handler as POST };
